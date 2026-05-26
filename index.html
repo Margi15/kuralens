@@ -673,6 +673,28 @@
         }
         .footer-bottom p { font-size: 0.65rem; color: #333; letter-spacing: 0.1em; }
 
+        /* ── PAYPAL BUTTON ── */
+        .paypal-btn {
+            width: 100%;
+            background: #0070ba;
+            color: #fff;
+            border: none;
+            padding: 15px 32px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .paypal-btn:hover { background: #003087; transform: translateY(-1px); }
+        .paypal-btn img { height: 18px; }
+
         /* ── SUCCESS MODAL ── */
         #success-modal {
             display: none;
@@ -847,7 +869,7 @@
                 <div class="card-name serif">Mist Grey</div>
                 <div class="card-sub lang-es">Gris clínico · Efecto natural</div>
                 <div class="card-sub lang-en">Clinical grey · Natural effect</div>
-                <span class="card-price serif">$49</span>
+                <span class="card-price serif">€49</span>
                 <button class="card-cta lang-es">Seleccionar →</button>
                 <button class="card-cta lang-en">Select →</button>
             </div>
@@ -865,7 +887,7 @@
                 <div class="card-name serif">Ocean Blue</div>
                 <div class="card-sub lang-es">Azul oceánico · Contraste máximo</div>
                 <div class="card-sub lang-en">Oceanic blue · Maximum contrast</div>
-                <span class="card-price serif">$49</span>
+                <span class="card-price serif">€49</span>
                 <button class="card-cta lang-es">Seleccionar →</button>
                 <button class="card-cta lang-en">Select →</button>
             </div>
@@ -883,7 +905,7 @@
                 <div class="card-name serif">Honey Brown</div>
                 <div class="card-sub lang-es">Miel cálida · Piel morena</div>
                 <div class="card-sub lang-en">Warm honey · For brown skin</div>
-                <span class="card-price serif">$49</span>
+                <span class="card-price serif">€49</span>
                 <button class="card-cta lang-es">Seleccionar →</button>
                 <button class="card-cta lang-en">Select →</button>
             </div>
@@ -901,7 +923,7 @@
                 <div class="card-name serif">Forest Hazel</div>
                 <div class="card-sub lang-es">Verde bosque · Misterioso</div>
                 <div class="card-sub lang-en">Forest green · Mysterious</div>
-                <span class="card-price serif">$49</span>
+                <span class="card-price serif">€49</span>
                 <button class="card-cta lang-es">Seleccionar →</button>
                 <button class="card-cta lang-en">Select →</button>
             </div>
@@ -919,7 +941,7 @@
                 <div class="card-name serif">Obsidian</div>
                 <div class="card-sub lang-es">Negro profundo · Hipnótico</div>
                 <div class="card-sub lang-en">Deep black · Hypnotic</div>
-                <span class="card-price serif">$49</span>
+                <span class="card-price serif">€49</span>
                 <button class="card-cta lang-es">Seleccionar →</button>
                 <button class="card-cta lang-en">Select →</button>
             </div>
@@ -937,7 +959,7 @@
                 <div class="card-name serif">Champagne</div>
                 <div class="card-sub lang-es">Dorado luminoso · Exclusivo</div>
                 <div class="card-sub lang-en">Luminous gold · Exclusive</div>
-                <span class="card-price serif">$49</span>
+                <span class="card-price serif">€49</span>
                 <button class="card-cta lang-es">Seleccionar →</button>
                 <button class="card-cta lang-en">Select →</button>
             </div>
@@ -975,11 +997,26 @@
                     <span class="spec-label lang-en">Power</span>
                 </div>
             </div>
-            <div class="drawer-price serif">$49.00 <span style="font-size:1rem;color:#666;">USD</span></div>
+            <div class="drawer-price serif">€49.00 <span style="font-size:1rem;color:#666;">EUR</span></div>
             <p class="drawer-shipping lang-es">✓ Envío internacional prioritario incluido</p>
             <p class="drawer-shipping lang-en">✓ Priority international shipping included</p>
-            <!-- Replace YOUR_PAYPAL_CLIENT_ID with your actual PayPal Client ID -->
-            <div id="paypal-button-container"></div>
+            <div id="paypal-button-container">
+                <form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                    <input type="hidden" name="cmd" value="_xclick">
+                    <input type="hidden" name="business" value="mavs1594@gmail.com">
+                    <input type="hidden" name="item_name" id="paypal-item-name" value="Kuralens — Clinical Cosmetic Contact Lenses">
+                    <input type="hidden" name="amount" value="49.00">
+                    <input type="hidden" name="currency_code" value="EUR">
+                    <input type="hidden" name="no_shipping" value="1">
+                    <input type="hidden" name="return" value="https://margi15.github.io/kuralens/">
+                    <input type="hidden" name="cancel_return" value="https://margi15.github.io/kuralens/">
+                    <button type="submit" class="paypal-btn">
+                        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal">
+                        <span class="lang-es">Pagar con PayPal</span>
+                        <span class="lang-en">Pay with PayPal</span>
+                    </button>
+                </form>
+            </div>
             <p style="font-size:0.6rem;color:#444;margin-top:12px;letter-spacing:0.1em;" class="lang-es">
                 Pago seguro · Garantía 30 días · Solo uso cosmético
             </p>
@@ -1105,7 +1142,7 @@
             </details>
             <details class="faq-item">
                 <summary>¿Envían a mi país?</summary>
-                <p class="faq-answer">Sí. Enviamos a todo el mundo. El envío prioritario está incluido en el precio de $49 USD. Tiempo estimado de entrega: 7-15 días hábiles según el destino.</p>
+                <p class="faq-answer">Sí. Enviamos a todo el mundo. El envío prioritario está incluido en el precio de €49 EUR. Tiempo estimado de entrega: 7-15 días hábiles según el destino.</p>
             </details>
             <details class="faq-item">
                 <summary>¿Son seguros para uso diario?</summary>
@@ -1127,7 +1164,7 @@
             </details>
             <details class="faq-item">
                 <summary>Do you ship to my country?</summary>
-                <p class="faq-answer">Yes. We ship worldwide. Priority shipping is included in the $49 USD price. Estimated delivery: 7–15 business days depending on destination.</p>
+                <p class="faq-answer">Yes. We ship worldwide. Priority shipping is included in the €49 EUR price. Estimated delivery: 7–15 business days depending on destination.</p>
             </details>
             <details class="faq-item">
                 <summary>Are they safe for daily wear?</summary>
@@ -1235,6 +1272,10 @@
         var lensEl = document.getElementById('drawer-lens-render');
         lensEl.className = 'drawer-lens-render ' + lensClass;
 
+        // Update PayPal item name
+        var itemNameEl = document.getElementById('paypal-item-name');
+        if (itemNameEl) itemNameEl.value = 'Kuralens ' + name + ' — Clinical Cosmetic Contact Lenses';
+
         // Open drawer
         drawer.classList.add('open');
 
@@ -1244,62 +1285,6 @@
         }, 100);
     }
 
-    // Order webhook URL — replace with your deployed Google Apps Script URL
-    var ORDERS_WEBHOOK_URL = 'YOUR_ORDERS_WEBHOOK_URL';
-
-    function logOrder(details) {
-        if (ORDERS_WEBHOOK_URL === 'YOUR_ORDERS_WEBHOOK_URL') return;
-        fetch(ORDERS_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                order_id: details.id,
-                product: 'Kuralens ' + selectedColor,
-                amount: '49.00',
-                currency: 'USD',
-                customer_name: details.payer.name.given_name + ' ' + details.payer.name.surname,
-                customer_email: details.payer.email_address || '',
-                payer_id: details.payer.payer_id,
-                date: new Date().toISOString()
-            })
-        }).catch(function(e) { console.warn('Order log failed:', e); });
-    }
-
-    function showSuccess(details) {
-        var name = details.payer.name.given_name;
-        var isEs = document.body.classList.contains('es');
-        document.getElementById('modal-msg').textContent = isEs
-            ? 'Gracias, ' + name + '. Tu Kuralens ' + selectedColor + ' está en camino. Recibirás confirmación por correo.'
-            : 'Thank you, ' + name + '. Your Kuralens ' + selectedColor + ' is on its way. You\'ll receive an email confirmation.';
-        document.getElementById('success-modal').classList.add('show');
-    }
-</script>
-
-<!-- PayPal SDK — replace YOUR_PAYPAL_CLIENT_ID with your actual Client ID from developer.paypal.com -->
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
-<script>
-    paypal.Buttons({
-        style: { layout: 'vertical', color: 'black', shape: 'rect', label: 'pay', height: 44 },
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: { value: '49.00' },
-                    description: 'Kuralens ' + selectedColor + ' — Clinical Cosmetic Contact Lenses'
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                logOrder(details);
-                showSuccess(details);
-            });
-        },
-        onError: function(err) {
-            console.error('PayPal error:', err);
-            var isEs = document.body.classList.contains('es');
-            alert(isEs ? 'Error al procesar el pago. Inténtalo de nuevo.' : 'Payment error. Please try again.');
-        }
-    }).render('#paypal-button-container');
 </script>
 
 </body>
