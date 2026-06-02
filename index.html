@@ -1,176 +1,524 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuraLens - Colored Contact Lenses</title>
+    <title>KuraLens — Premium Colored Contact Lenses</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=EUR"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.paypal.com/sdk/js?client-id=ASp5KHxAglUMDpxcYiLu2pYKzAY3YLef6iq7WQLoPuNuA0K6z84T_XpRawBYm-eV98lrN-2oft-h34sT&currency=EUR"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .lens-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        :root {
+            --pink: #ff1f8e;
+            --purple: #9d00ff;
+            --dark: #080810;
+            --card: #0f0f1a;
+            --card2: #14141f;
+        }
+
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+        body { background: var(--dark); color: white; }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0d001a 0%, #1a0033 40%, #0d001a 70%, #1a0022 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(157,0,255,0.2) 0%, transparent 70%),
+                        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,31,142,0.15) 0%, transparent 60%);
+        }
+        .hero-grid {
+            position: absolute; inset: 0; opacity: 0.07;
+            background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+        .floating { animation: float 6s ease-in-out infinite; }
+
+        /* Glow text */
+        .glow-pink { text-shadow: 0 0 20px rgba(255,31,142,0.8), 0 0 40px rgba(255,31,142,0.4); }
+        .glow-purple { text-shadow: 0 0 20px rgba(157,0,255,0.8), 0 0 40px rgba(157,0,255,0.4); }
+        .gradient-text {
+            background: linear-gradient(90deg, #ff1f8e, #9d00ff, #ff1f8e);
+            background-size: 200%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+
+        /* CTA buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #ff1f8e, #9d00ff);
+            border: none; color: white; font-weight: 700;
+            padding: 16px 36px; border-radius: 50px;
+            box-shadow: 0 0 30px rgba(255,31,142,0.4);
+            transition: transform .2s, box-shadow .2s;
+            cursor: pointer; text-decoration: none; display: inline-block;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(255,31,142,0.6); }
+
+        .btn-wa {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border: none; color: white; font-weight: 700;
+            padding: 16px 36px; border-radius: 50px;
+            box-shadow: 0 0 30px rgba(37,211,102,0.3);
+            transition: transform .2s, box-shadow .2s;
+            cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-wa:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(37,211,102,0.5); }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(8,8,16,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* ─── TRUST BAR ─── */
+        .trust-bar {
+            background: linear-gradient(90deg, rgba(157,0,255,0.15), rgba(255,31,142,0.15));
+            border-top: 1px solid rgba(255,31,142,0.2);
+            border-bottom: 1px solid rgba(255,31,142,0.2);
+        }
+
+        /* ─── PRODUCT CARDS ─── */
+        .product-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 60px rgba(157,0,255,0.3), 0 0 0 1px rgba(157,0,255,0.4);
+            border-color: rgba(157,0,255,0.4);
+        }
+
+        /* Image flip on hover */
+        .img-container {
+            position: relative; overflow: hidden;
+            height: 280px; background: #0a0a14;
+        }
+        .img-container img {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            transition: opacity .5s ease, transform .5s ease;
+        }
+        .img-front { opacity: 1; transform: scale(1); }
+        .img-back  { opacity: 0; transform: scale(1.05); }
+        .product-card:hover .img-front { opacity: 0; transform: scale(1.05); }
+        .product-card:hover .img-back  { opacity: 1; transform: scale(1); }
+
+        .price-glow {
+            background: linear-gradient(90deg, #ff1f8e, #9d00ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 1.8rem; font-weight: 800;
+        }
+
+        .brand-tag {
+            font-size: 11px; font-weight: 700; letter-spacing: 1px;
+            padding: 3px 10px; border-radius: 20px;
+            background: rgba(157,0,255,0.2);
+            border: 1px solid rgba(157,0,255,0.4);
+            color: #c084fc;
+            text-transform: uppercase;
+        }
+
+        /* ─── FEATURES ─── */
+        .feature-card {
+            background: var(--card2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            transition: transform .2s, border-color .2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255,31,142,0.3);
+        }
+
+        /* ─── SECTION LABEL ─── */
+        .section-label {
+            background: rgba(255,31,142,0.1);
+            border: 1px solid rgba(255,31,142,0.3);
+            color: #ff1f8e;
+            font-size: 12px; font-weight: 700; letter-spacing: 2px;
+            padding: 6px 16px; border-radius: 30px;
+            text-transform: uppercase; display: inline-block;
+        }
+
+        /* ─── DIVIDER ─── */
+        .neon-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #9d00ff, #ff1f8e, transparent);
+            margin: 0;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: #050508;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Scroll fade */
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(#9d00ff, #ff1f8e); border-radius: 3px; }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
 
-    <!-- Hero Section -->
-    <header class="gradient-bg text-white py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-5xl font-bold mb-4">✨ KuraLens ✨</h1>
-            <p class="text-2xl mb-8">Transform Your Look with Premium Colored Contact Lenses</p>
-            <p class="text-xl mb-8">🔥 Special Launch Price: €49 EUR 🔥</p>
-            <a href="#products" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition">Shop Now 👁️</a>
+    <!-- ─── NAV ─── -->
+    <nav>
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-black gradient-text tracking-tight">✨ KuraLens</a>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
+                <a href="#products" class="hover:text-white transition">Shop</a>
+                <a href="#features" class="hover:text-white transition">Why Us</a>
+                <a href="#contact" class="hover:text-white transition">Contact</a>
+            </div>
+            <a href="https://wa.me/310623258536" target="_blank" class="btn-wa text-sm py-2 px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.122 1.523 5.855L.057 23.885a.75.75 0 00.921.921l6.108-1.452A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.49-5.19-1.349l-.372-.213-3.857.916.951-3.773-.234-.386A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                WhatsApp
+            </a>
         </div>
+    </nav>
+
+    <!-- ─── HERO ─── -->
+    <header class="hero pt-20">
+        <div class="hero-grid"></div>
+
+        <!-- Floating lens blobs -->
+        <div class="absolute top-20 left-10 w-40 h-40 rounded-full floating opacity-20"
+             style="background: radial-gradient(circle, #9d00ff, transparent); filter: blur(30px); animation-delay: 0s;"></div>
+        <div class="absolute bottom-32 right-16 w-52 h-52 rounded-full floating opacity-15"
+             style="background: radial-gradient(circle, #ff1f8e, transparent); filter: blur(40px); animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 right-1/4 w-32 h-32 rounded-full floating opacity-10"
+             style="background: radial-gradient(circle, #ff1f8e, transparent); filter: blur(20px); animation-delay: 4s;"></div>
+
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <div class="section-label mb-8">🔥 Limited Launch Offer</div>
+
+            <h1 class="text-6xl md:text-8xl font-black mb-6 leading-none">
+                <span class="text-white">Change Your</span><br>
+                <span class="gradient-text">Look Today</span>
+            </h1>
+
+            <p class="text-gray-400 text-xl md:text-2xl mb-4 max-w-xl mx-auto">
+                Premium colored contact lenses — small pupil collection
+            </p>
+
+            <div class="flex items-center justify-center gap-3 mb-10">
+                <span class="text-5xl font-black text-white glow-pink">€49</span>
+                <div class="text-left">
+                    <div class="text-yellow-400 font-bold">🌍 Free Shipping</div>
+                    <div class="text-gray-400 text-sm">Worldwide</div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#products" class="btn-primary text-lg">Shop Now 👁️</a>
+                <a href="https://wa.me/310623258536?text=Hi!%20I%27m%20interested%20in%20KuraLens%20colored%20contacts" target="_blank" class="btn-wa text-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.122 1.523 5.855L.057 23.885a.75.75 0 00.921.921l6.108-1.452A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.49-5.19-1.349l-.372-.213-3.857.916.951-3.773-.234-.386A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                    Ask on WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-500 text-sm animate-bounce">↓ Scroll</div>
     </header>
 
-    <!-- Products Section -->
-    <section id="products" class="py-16 container mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center mb-12">Choose Your Color</h2>
-        
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Product 1 -->
-            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
-                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
-                    <span class="text-6xl">👁️</span>
+    <!-- ─── TRUST BAR ─── -->
+    <div class="trust-bar py-4">
+        <div class="max-w-6xl mx-auto px-6 flex flex-wrap justify-center gap-8 text-sm font-medium text-gray-300">
+            <span>✅ FDA / CE / ISO Certified</span>
+            <span>📦 Free Worldwide Shipping</span>
+            <span>🔄 Yearly Lenses</span>
+            <span>💳 Secure PayPal</span>
+            <span>💬 WhatsApp Support</span>
+        </div>
+    </div>
+
+    <div class="neon-divider"></div>
+
+    <!-- ─── PRODUCTS ─── -->
+    <section id="products" class="py-24 max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16 fade-up">
+            <div class="section-label mb-5">Our Collection</div>
+            <h2 class="text-4xl md:text-6xl font-black text-white mb-4">
+                Choose Your <span class="gradient-text">Color</span>
+            </h2>
+            <p class="text-gray-400 text-lg">Hover over each lens to see how it looks on real eyes ✨</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- 1. Arctic Brown -->
+            <div class="product-card fade-up">
+                <div class="img-container">
+                    <img class="img-front" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-brown-desc0.jpg" alt="Uris Arctic Brown lens" loading="lazy">
+                    <img class="img-back" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-brown-desc2.jpg" alt="Uris Arctic Brown on eyes" loading="lazy">
+                    <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border-radius:8px;padding:4px 10px;font-size:11px;color:#fbbf24;font-weight:700;">YEARLY</div>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Ocean Blue</h3>
-                <p class="text-gray-600 mb-4">Deep ocean blue for a mesmerizing look</p>
-                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
-                <div id="paypal-button-1"></div>
+                <div class="p-6">
+                    <span class="brand-tag mb-3 inline-block">Uris</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Arctic Brown Circle</h3>
+                    <p class="text-gray-400 text-sm mb-5 leading-relaxed">Hand-painted natural brown with deep warm tones. Looks stunning on both dark and light eyes. DIA 14.2mm.</p>
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="price-glow">€49</span>
+                        <div class="flex gap-1">
+                            <span class="text-yellow-400 text-xs">★★★★★</span>
+                            <span class="text-gray-500 text-xs">62 reviews</span>
+                        </div>
+                    </div>
+                    <div id="paypal-button-1"></div>
+                </div>
             </div>
 
-            <!-- Product 2 -->
-            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
-                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
-                    <span class="text-6xl">👁️</span>
+            <!-- 2. Arctic Green -->
+            <div class="product-card fade-up" style="transition-delay:.1s">
+                <div class="img-container">
+                    <img class="img-front" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-green-desc0.jpg" alt="Uris Arctic Green lens" loading="lazy">
+                    <img class="img-back" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-green-desc2.jpg" alt="Uris Arctic Green on eyes" loading="lazy">
+                    <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border-radius:8px;padding:4px 10px;font-size:11px;color:#fbbf24;font-weight:700;">YEARLY</div>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Mystic Green</h3>
-                <p class="text-gray-600 mb-4">Enchanting green for a mysterious vibe</p>
-                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
-                <div id="paypal-button-2"></div>
+                <div class="p-6">
+                    <span class="brand-tag mb-3 inline-block">Uris</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Arctic Green</h3>
+                    <p class="text-gray-400 text-sm mb-5 leading-relaxed">Vivid green with a natural depth effect. Intense color that works on all eye tones. DIA 14.2mm.</p>
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="price-glow">€49</span>
+                        <div class="flex gap-1">
+                            <span class="text-yellow-400 text-xs">★★★★½</span>
+                            <span class="text-gray-500 text-xs">123 reviews</span>
+                        </div>
+                    </div>
+                    <div id="paypal-button-2"></div>
+                </div>
             </div>
 
-            <!-- Product 3 -->
-            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
-                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
-                    <span class="text-6xl">👁️</span>
+            <!-- 3. Arctic Hazel -->
+            <div class="product-card fade-up" style="transition-delay:.2s">
+                <div class="img-container">
+                    <img class="img-front" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-hazel-desc0.jpg" alt="Uris Arctic Hazel lens" loading="lazy">
+                    <img class="img-back" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-hazel-desc2.jpg" alt="Uris Arctic Hazel on eyes" loading="lazy">
+                    <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border-radius:8px;padding:4px 10px;font-size:11px;color:#fbbf24;font-weight:700;">YEARLY</div>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Ruby Red</h3>
-                <p class="text-gray-600 mb-4">Bold red for a striking appearance</p>
-                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
-                <div id="paypal-button-3"></div>
+                <div class="p-6">
+                    <span class="brand-tag mb-3 inline-block">Uris</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Arctic Hazel</h3>
+                    <p class="text-gray-400 text-sm mb-5 leading-relaxed">Golden hazel tones with a sunburst pattern. Natural look with a beautiful warm glow. DIA 14.2mm.</p>
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="price-glow">€49</span>
+                        <div class="flex gap-1">
+                            <span class="text-yellow-400 text-xs">★★★★½</span>
+                            <span class="text-gray-500 text-xs">26 reviews</span>
+                        </div>
+                    </div>
+                    <div id="paypal-button-3"></div>
+                </div>
             </div>
 
-            <!-- Product 4 -->
-            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
-                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
-                    <span class="text-6xl">👁️</span>
+            <!-- 4. Arctic Ice -->
+            <div class="product-card fade-up" style="transition-delay:.3s">
+                <div class="img-container">
+                    <img class="img-front" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-ice-desc0.jpg" alt="Uris Arctic Ice lens" loading="lazy">
+                    <img class="img-back" src="https://cdn.shopify.com/s/files/1/0878/2578/files/arctic-ice-desc2.jpg" alt="Uris Arctic Ice on eyes" loading="lazy">
+                    <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border-radius:8px;padding:4px 10px;font-size:11px;color:#fbbf24;font-weight:700;">YEARLY</div>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Hazel Brown</h3>
-                <p class="text-gray-600 mb-4">Natural hazel for everyday elegance</p>
-                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
-                <div id="paypal-button-4"></div>
+                <div class="p-6">
+                    <span class="brand-tag mb-3 inline-block">Uris</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Arctic Ice</h3>
+                    <p class="text-gray-400 text-sm mb-5 leading-relaxed">Icy grey-blue with a striking ethereal effect. Turns heads everywhere you go. DIA 14.2mm.</p>
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="price-glow">€49</span>
+                        <div class="flex gap-1">
+                            <span class="text-yellow-400 text-xs">★★★★★</span>
+                            <span class="text-gray-500 text-xs">67 reviews</span>
+                        </div>
+                    </div>
+                    <div id="paypal-button-4"></div>
+                </div>
             </div>
 
-            <!-- Product 5 -->
-            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
-                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
-                    <span class="text-6xl">👁️</span>
+            <!-- 5. Persona Grey -->
+            <div class="product-card fade-up" style="transition-delay:.4s">
+                <div class="img-container">
+                    <img class="img-front" src="https://cdn.shopify.com/s/files/1/0878/2578/files/princess-pinky-persona-grey-product-photo-lens.jpg" alt="Princess Pinky Persona Grey lens" loading="lazy">
+                    <img class="img-back" src="https://cdn.shopify.com/s/files/1/0878/2578/files/princess-pinky-persona-grey-product-photo-closeup.jpg" alt="Princess Pinky Persona Grey on eyes" loading="lazy">
+                    <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border-radius:8px;padding:4px 10px;font-size:11px;color:#fbbf24;font-weight:700;">YEARLY</div>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Violet Dream</h3>
-                <p class="text-gray-600 mb-4">Dreamy violet for a fantasy look</p>
-                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
-                <div id="paypal-button-5"></div>
+                <div class="p-6">
+                    <span class="brand-tag mb-3 inline-block" style="background:rgba(255,31,142,0.15);border-color:rgba(255,31,142,0.4);color:#f9a8d4;">Princess Pinky</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Persona Grey</h3>
+                    <p class="text-gray-400 text-sm mb-5 leading-relaxed">Signature Persona Series grey. Sophisticated, multi-layered design that's alluring and expressive.</p>
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="price-glow">€49</span>
+                        <div class="flex gap-1">
+                            <span class="text-yellow-400 text-xs">★★★★★</span>
+                            <span class="text-gray-500 text-xs">46 reviews</span>
+                        </div>
+                    </div>
+                    <div id="paypal-button-5"></div>
+                </div>
             </div>
 
-            <!-- Product 6 -->
-            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
-                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
-                    <span class="text-6xl">👁️</span>
+            <!-- More styles CTA card -->
+            <div class="fade-up" style="transition-delay:.5s">
+                <div class="h-full rounded-3xl border border-dashed border-gray-700 flex flex-col items-center justify-center p-8 text-center"
+                     style="min-height: 420px; background: rgba(255,255,255,0.02);">
+                    <div class="text-5xl mb-4">💬</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Want More Styles?</h3>
+                    <p class="text-gray-500 text-sm mb-6">We have 25+ colors available. Ask us on WhatsApp for the full collection!</p>
+                    <a href="https://wa.me/310623258536?text=Hi!%20I%20want%20to%20see%20more%20KuraLens%20styles" target="_blank" class="btn-wa text-sm py-3 px-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.122 1.523 5.855L.057 23.885a.75.75 0 00.921.921l6.108-1.452A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.49-5.19-1.349l-.372-.213-3.857.916.951-3.773-.234-.386A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                        See All Styles
+                    </a>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Gray Steel</h3>
-                <p class="text-gray-600 mb-4">Cool gray for a modern edge</p>
-                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
-                <div id="paypal-button-6"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="neon-divider"></div>
+
+    <!-- ─── FEATURES ─── -->
+    <section id="features" class="py-24 max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16 fade-up">
+            <div class="section-label mb-5">Why KuraLens</div>
+            <h2 class="text-4xl md:text-6xl font-black text-white">
+                Premium <span class="gradient-text">Quality</span>
+            </h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="feature-card p-8 text-center fade-up">
+                <div class="text-5xl mb-4">✅</div>
+                <h3 class="text-lg font-bold text-white mb-2">FDA · CE · ISO Certified</h3>
+                <p class="text-gray-500 text-sm">Internationally certified safe lenses. Your eyes are in good hands.</p>
+            </div>
+            <div class="feature-card p-8 text-center fade-up" style="transition-delay:.1s">
+                <div class="text-5xl mb-4">📦</div>
+                <h3 class="text-lg font-bold text-white mb-2">Free Worldwide Shipping</h3>
+                <p class="text-gray-500 text-sm">We ship to 50+ countries with tracking. No hidden fees, ever.</p>
+            </div>
+            <div class="feature-card p-8 text-center fade-up" style="transition-delay:.2s">
+                <div class="text-5xl mb-4">🔄</div>
+                <h3 class="text-lg font-bold text-white mb-2">Yearly Lenses</h3>
+                <p class="text-gray-500 text-sm">Last up to 12 months with proper care — best value per wear.</p>
+            </div>
+            <div class="feature-card p-8 text-center fade-up" style="transition-delay:.3s">
+                <div class="text-5xl mb-4">💳</div>
+                <h3 class="text-lg font-bold text-white mb-2">Secure PayPal Checkout</h3>
+                <p class="text-gray-500 text-sm">100% buyer protection on every order via PayPal.</p>
+            </div>
+            <div class="feature-card p-8 text-center fade-up" style="transition-delay:.4s">
+                <div class="text-5xl mb-4">👁️</div>
+                <h3 class="text-lg font-bold text-white mb-2">Small Pupil Design</h3>
+                <p class="text-gray-500 text-sm">Narrow pupil aperture gives a hyper-natural, realistic look.</p>
+            </div>
+            <div class="feature-card p-8 text-center fade-up" style="transition-delay:.5s">
+                <div class="text-5xl mb-4">💬</div>
+                <h3 class="text-lg font-bold text-white mb-2">WhatsApp Support</h3>
+                <p class="text-gray-500 text-sm">Questions about sizing, prescription or care? We answer fast.</p>
             </div>
         </div>
     </section>
 
-    <!-- Features -->
-    <section class="bg-white py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12">Why Choose KuraLens?</h2>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div>
-                    <div class="text-5xl mb-4">✅</div>
-                    <h3 class="text-xl font-bold mb-2">FDA Approved</h3>
-                    <p class="text-gray-600">Safe and certified contact lenses</p>
-                </div>
-                <div>
-                    <div class="text-5xl mb-4">📦</div>
-                    <h3 class="text-xl font-bold mb-2">Free Shipping</h3>
-                    <p class="text-gray-600">Worldwide delivery included</p>
-                </div>
-                <div>
-                    <div class="text-5xl mb-4">🔄</div>
-                    <h3 class="text-xl font-bold mb-2">Yearly Lenses</h3>
-                    <p class="text-gray-600">Last up to 1 year with proper care</p>
-                </div>
-            </div>
+    <div class="neon-divider"></div>
+
+    <!-- ─── CTA BANNER ─── -->
+    <section class="py-24 text-center fade-up" style="background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(157,0,255,0.15) 0%, transparent 70%);">
+        <div class="max-w-2xl mx-auto px-6">
+            <h2 class="text-4xl md:text-6xl font-black text-white mb-4">
+                Ready to <span class="gradient-text">Transform?</span>
+            </h2>
+            <p class="text-gray-400 text-lg mb-8">5 premium styles · €49 each · Free worldwide shipping</p>
+            <a href="#products" class="btn-primary text-lg">Shop the Collection 👁️</a>
         </div>
     </section>
 
-    <!-- Contact -->
-    <section class="py-16 container mx-auto px-6 text-center">
-        <h2 class="text-4xl font-bold mb-8">Questions?</h2>
-        <p class="text-xl mb-4">📧 Email: contact@kuralens.com</p>
-        <p class="text-xl mb-4">📱 WhatsApp: +XX XXX XXX XXX</p>
-        <p class="text-gray-600 mt-8">⚠️ <strong>Important:</strong> Prescription required. Consult with an eye specialist.</p>
+    <div class="neon-divider"></div>
+
+    <!-- ─── CONTACT ─── -->
+    <section id="contact" class="py-24 max-w-2xl mx-auto px-6 text-center fade-up">
+        <div class="section-label mb-5">Get in Touch</div>
+        <h2 class="text-4xl md:text-5xl font-black text-white mb-4">Have Questions?</h2>
+        <p class="text-gray-500 mb-10">We're here to help you find your perfect pair.</p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+            <a href="https://wa.me/310623258536?text=Hi!%20I%20want%20to%20know%20more%20about%20KuraLens" target="_blank" class="btn-wa text-base py-4 px-8">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.122 1.523 5.855L.057 23.885a.75.75 0 00.921.921l6.108-1.452A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.49-5.19-1.349l-.372-.213-3.857.916.951-3.773-.234-.386A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                +31 06 2325 8536
+            </a>
+            <a href="mailto:contact@kuralens.com" class="btn-primary text-base py-4 px-8">
+                📧 contact@kuralens.com
+            </a>
+        </div>
+
+        <div style="background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); border-radius:16px; padding: 20px;">
+            <p class="text-yellow-200 text-sm">
+                ⚠️ <strong>Important:</strong> Colored contact lenses require a valid prescription.
+                Always consult with an eye care specialist before ordering.
+            </p>
+        </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 text-center">
-        <p>&copy; 2026 KuraLens. All rights reserved.</p>
+    <!-- ─── FOOTER ─── -->
+    <footer class="py-10 text-center">
+        <p class="text-2xl font-black gradient-text mb-2">✨ KuraLens</p>
+        <p class="text-gray-600 text-sm mb-4">Premium Colored Contact Lenses</p>
+        <div class="flex justify-center gap-6 text-sm text-gray-600 mb-6">
+            <a href="#products" class="hover:text-white transition">Shop</a>
+            <a href="#features" class="hover:text-white transition">Why Us</a>
+            <a href="#contact" class="hover:text-white transition">Contact</a>
+        </div>
+        <p class="text-gray-700 text-xs">&copy; 2026 KuraLens. All rights reserved.</p>
     </footer>
 
-    <!-- PayPal Buttons Script -->
     <script>
-        // Replace 'EAq_5cFd12tEtk0jOAHL8w3lgLYuTl4ylqtRUGYQ5VBrDLSUqCsdl4TOATXpvP807vN3QPZuA9mxVpeC' with your actual PayPal Client ID
+        // Scroll fade-in
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+        // PayPal
         const products = [
-            { id: '1', name: 'Ocean Blue - KuraLens', price: '49.00' },
-            { id: '2', name: 'Mystic Green - KuraLens', price: '49.00' },
-            { id: '3', name: 'Ruby Red - KuraLens', price: '49.00' },
-            { id: '4', name: 'Hazel Brown - KuraLens', price: '49.00' },
-            { id: '5', name: 'Violet Dream - KuraLens', price: '49.00' },
-            { id: '6', name: 'Gray Steel - KuraLens', price: '49.00' }
+            { id: '1', name: 'Uris Arctic Brown Circle - KuraLens',    price: '49.00' },
+            { id: '2', name: 'Uris Arctic Green - KuraLens',            price: '49.00' },
+            { id: '3', name: 'Uris Arctic Hazel - KuraLens',            price: '49.00' },
+            { id: '4', name: 'Uris Arctic Ice - KuraLens',              price: '49.00' },
+            { id: '5', name: 'Princess Pinky Persona Grey - KuraLens',  price: '49.00' },
         ];
 
-        products.forEach((product, index) => {
+        products.forEach((p, i) => {
             paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            description: product.name,
-                            amount: {
-                                value: product.price,
-                                currency_code: 'EUR'
-                            }
-                        }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        alert('Payment completed by ' + details.payer.name.given_name + '! We will contact you soon.');
-                        // Here you can redirect to a thank you page or send data to your backend
-                    });
-                },
-                onError: function(err) {
-                    console.error('PayPal Error:', err);
-                    alert('There was an error processing your payment. Please try again or contact us.');
+                style: { shape: 'pill', color: 'gold', layout: 'horizontal', label: 'buynow', tagline: false },
+                createOrder: (data, actions) => actions.order.create({
+                    purchase_units: [{ description: p.name, amount: { value: p.price, currency_code: 'EUR' } }]
+                }),
+                onApprove: (data, actions) => actions.order.capture().then(details => {
+                    alert('🎉 Payment complete! Thank you ' + details.payer.name.given_name + '! We\'ll contact you on WhatsApp soon.');
+                }),
+                onError: err => {
+                    console.error(err);
+                    alert('Payment error. Please try again or contact us on WhatsApp.');
                 }
-            }).render('#paypal-button-' + (index + 1));
+            }).render('#paypal-button-' + (i + 1));
         });
     </script>
 
