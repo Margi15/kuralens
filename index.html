@@ -3,777 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuralens ✨ — Lentes Cosméticos Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>KuraLens - Colored Contact Lenses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=EUR"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --blush:    #FFB7C5;
-            --hot:      #FF6B9D;
-            --lavender: #E6D5F0;
-            --lav2:     #C9B8E8;
-            --cream:    #FFF9FB;
-            --gold:     #F4E4C1;
-            --gold2:    #C9A96E;
-            --mint:     #B5EAD7;
-            --text:     #3D2052;
-            --text2:    #8B6A8B;
-            --white:    #FFFFFF;
-            --border:   #F0D0E0;
-            --spink:    rgba(255,107,157,0.2);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; cursor: none !important; }
-        body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
-
-        /* ── CURSOR ── */
-        .cur-dot {
-            position: fixed; top: 0; left: 0; width: 10px; height: 10px;
-            background: var(--hot); border-radius: 50%; pointer-events: none;
-            z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s;
-        }
-        .cur-ring {
-            position: fixed; top: 0; left: 0; width: 30px; height: 30px;
-            border: 2px solid var(--blush); border-radius: 50%; pointer-events: none;
-            z-index: 9998; transform: translate(-50%,-50%);
-            transition: left 0.08s ease, top 0.08s ease, width 0.2s, height 0.2s;
-        }
-
-        /* ── LOADING ── */
-        #loader {
-            position: fixed; inset: 0; background: var(--cream);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10000; transition: opacity 0.5s;
-        }
-        #loader.out { opacity: 0; pointer-events: none; }
-        .load-lens {
-            width: 72px; height: 72px; border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.5) 0%, transparent 35%),
-                        radial-gradient(circle at 50% 50%, #1a1a1a 0%, #1a1a1a 19%, #FF6B9D 21%, #FFB7C5 40%, transparent 70%);
-            animation: spin 1s linear infinite; box-shadow: 0 0 28px var(--spink); margin-bottom: 18px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .load-txt { font-family: 'Pacifico', cursive; color: var(--hot); font-size: 1.1rem; }
-
-        /* ── SCROLLBAR ── */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--cream); }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--blush), var(--lav2)); border-radius: 10px; }
-
-        /* LANGUAGE */
-        body.es .lang-en { display: none; }
-        body.en .lang-es { display: none; }
-
-        /* ── HEADER ── */
-        header {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            padding: 14px 44px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(255,249,251,0.93); backdrop-filter: blur(16px);
-            border-bottom: 2px solid var(--border); transition: box-shadow 0.3s;
-        }
-        header.scrolled { box-shadow: 0 4px 24px var(--spink); }
-        .logo { font-family: 'Pacifico', cursive; font-size: 1.55rem; color: var(--hot); }
-        nav a {
-            color: var(--text2); font-size: 0.76rem; font-weight: 700;
-            text-decoration: none; margin: 0 13px; transition: color 0.2s;
-        }
-        nav a:hover { color: var(--hot); }
-        .lang-btn {
-            background: linear-gradient(135deg, var(--blush), var(--lavender));
-            border: none; color: var(--text); font-size: 0.68rem; font-weight: 800;
-            letter-spacing: 0.1em; padding: 7px 15px; border-radius: 30px;
-            font-family: 'Nunito', sans-serif; transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .lang-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px var(--spink); }
-
-        /* ── HERO ── */
-        #hero {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(155deg, #FFF0F8 0%, #F0E8FF 55%, #E8F5FF 100%);
-            padding-top: 80px; overflow: hidden; position: relative;
-        }
-        .deco {
-            position: absolute; pointer-events: none; font-size: 2rem;
-            animation: flt 6s ease-in-out infinite;
-        }
-        @keyframes flt {
-            0%,100% { transform: translateY(0) rotate(0deg); }
-            33%      { transform: translateY(-14px) rotate(5deg); }
-            66%      { transform: translateY(-6px) rotate(-3deg); }
-        }
-        .hero-content { text-align: center; max-width: 700px; padding: 0 32px; position: relative; z-index: 2; }
-        .hero-tag {
-            display: inline-block; font-size: 0.7rem; font-weight: 800;
-            letter-spacing: 0.14em; text-transform: uppercase; color: var(--hot);
-            background: var(--gold); padding: 8px 22px; border-radius: 30px; margin-bottom: 20px;
-        }
-        .hero-title {
-            font-family: 'Pacifico', cursive;
-            font-size: clamp(3rem, 8vw, 6rem); line-height: 1.2; color: var(--text); margin-bottom: 20px;
-        }
-        .hero-title .acc { color: var(--hot); }
-        .hero-sub { font-size: 0.98rem; font-weight: 500; color: var(--text2); line-height: 1.9; max-width: 500px; margin: 0 auto 44px; }
-        .btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-
-        /* ── BUTTONS ── */
-        .btn-p {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--hot), #FF4FA0);
-            color: #fff; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 800;
-            letter-spacing: 0.1em; text-transform: uppercase; padding: 15px 38px;
-            text-decoration: none; border-radius: 50px; border: none;
-            box-shadow: 0 8px 28px var(--spink); transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .btn-p:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 36px var(--spink); }
-        .btn-g {
-            display: inline-block; border: 2.5px solid var(--blush); color: var(--hot);
-            font-size: 0.8rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-            padding: 13px 34px; text-decoration: none; border-radius: 50px;
-            background: rgba(255,183,197,0.1); font-family: 'Nunito', sans-serif; transition: all 0.3s;
-        }
-        .btn-g:hover { background: var(--blush); color: #fff; transform: translateY(-2px); }
-
-        /* ── MARQUEE ── */
-        .strip {
-            background: linear-gradient(90deg, var(--hot), var(--lav2), var(--blush), var(--hot));
-            background-size: 300% 100%; animation: gshift 5s ease infinite;
-            padding: 13px 0; overflow: hidden; white-space: nowrap;
-        }
-        @keyframes gshift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .strip-inner { display: inline-block; animation: mq 28s linear infinite; }
-        .strip span { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: #fff; margin: 0 22px; }
-        @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-        /* ── BADGES WRAP ── */
-        .badges-wrap { background: var(--white); border-top: 2px solid var(--border); border-bottom: 2px solid var(--border); }
-        .badges-grid {
-            display: grid; grid-template-columns: repeat(3,1fr);
-            max-width: 960px; margin: 0 auto; padding: 44px 32px; gap: 28px; text-align: center;
-        }
-        .badge-item {
-            padding: 30px 22px; background: var(--cream); border-radius: 24px;
-            border: 2px solid var(--border); transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .badge-item:hover { transform: translateY(-4px); box-shadow: 0 12px 32px var(--spink); }
-        .badge-icon { font-size: 2.4rem; margin-bottom: 10px; display: block; }
-        .badge-title { font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
-        .badge-desc { font-size: 0.76rem; color: var(--text2); font-weight: 500; }
-
-        /* ── SECTIONS ── */
-        section { padding: 88px 48px; max-width: 1200px; margin: 0 auto; }
-        .stag { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase; color: var(--hot); display: block; margin-bottom: 12px; }
-        .stitle { font-family: 'Pacifico', cursive; font-size: clamp(1.8rem,4vw,2.8rem); color: var(--text); line-height: 1.3; margin-bottom: 50px; }
-
-        /* ── SPECS BAR ── */
-        .specs-bar {
-            display: grid; grid-template-columns: repeat(4,1fr);
-            background: linear-gradient(135deg, var(--hot), #FF4FA0, var(--lav2));
-            border-radius: 28px; overflow: hidden; box-shadow: 0 12px 40px var(--spink);
-        }
-        .sb-item { padding: 44px 20px; border-right: 1px solid rgba(255,255,255,0.2); text-align: center; }
-        .sb-item:last-child { border-right: none; }
-        .sb-val { font-family: 'Pacifico', cursive; font-size: 2.8rem; color: #fff; display: block; }
-        .sb-lbl { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.82); margin-top: 8px; display: block; }
-
-        /* ── QUIZ ── */
-        .quiz-wrap {
-            background: linear-gradient(135deg, #FFF0F8, #F0E8FF, #E8F5FF);
-            border-radius: 32px; padding: 56px 44px; text-align: center; border: 2.5px solid var(--border);
-        }
-        .quiz-title { font-family: 'Pacifico', cursive; font-size: 2.1rem; color: var(--text); margin-bottom: 10px; }
-        .quiz-sub { font-size: 0.9rem; color: var(--text2); font-weight: 500; margin-bottom: 36px; }
-        .quiz-opts { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 28px; }
-        .qbtn {
-            background: var(--white); border: 2px solid var(--border); color: var(--text);
-            font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700;
-            padding: 11px 22px; border-radius: 40px; transition: all 0.25s;
-        }
-        .qbtn:hover, .qbtn.on {
-            background: linear-gradient(135deg, var(--hot), #FF4FA0);
-            color: #fff; border-color: var(--hot); transform: scale(1.05);
-        }
-        .quiz-result {
-            display: none; background: var(--white); border: 2.5px solid var(--border);
-            border-radius: 24px; padding: 26px 32px; max-width: 420px; margin: 0 auto;
-        }
-        .quiz-result.show { display: block; }
-        .qr-title { font-family: 'Pacifico', cursive; font-size: 1.5rem; color: var(--hot); margin-bottom: 8px; }
-        .qr-desc { font-size: 0.85rem; color: var(--text2); font-weight: 500; line-height: 1.8; }
-
-        /* ── PRODUCT GRID ── */
-        .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 26px; }
-        .prod-card {
-            background: var(--white); border: 2.5px solid var(--border); border-radius: 28px;
-            overflow: hidden; transition: all 0.35s; box-shadow: 0 4px 16px rgba(255,183,197,0.1);
-            position: relative;
-        }
-        .prod-card:hover { transform: translateY(-8px) rotate(0.4deg); box-shadow: 0 20px 48px var(--spink); border-color: var(--blush); }
-        .prod-card.active { border-color: var(--hot); box-shadow: 0 0 0 4px rgba(255,107,157,0.18); }
-        .cbadge {
-            position: absolute; top: 13px; right: 13px; z-index: 3;
-            background: linear-gradient(135deg, var(--hot), #FF4FA0); color: #fff;
-            font-size: 0.58rem; font-weight: 800; padding: 5px 11px; border-radius: 20px;
-            box-shadow: 0 3px 10px var(--spink);
-        }
-        .cbadge.lav { background: linear-gradient(135deg, var(--lav2), #9B89D4); }
-        .cbadge.gold { background: linear-gradient(135deg, var(--gold2), #E8B44C); color: #3a2000; }
-        .cbadge.mint { background: linear-gradient(135deg, #7DD6B5, #4ABEA0); color: #1a4a3a; }
-        .cbadge.dark { background: linear-gradient(135deg, #3D2052, #6B4080); }
-        .card-img {
-            height: 210px; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #FFF0F8, #F0E8FF); position: relative; overflow: hidden;
-        }
-        .card-img::before {
-            content: '✨'; position: absolute; top: 18px; left: 18px; font-size: 1.2rem;
-            opacity: 0; transition: opacity 0.3s; animation: flt 3s ease-in-out infinite;
-        }
-        .prod-card:hover .card-img::before { opacity: 1; }
-        .lens {
-            width: 145px; height: 145px; border-radius: 50%; z-index: 2;
-            transition: transform 0.4s; box-shadow: 0 8px 32px rgba(0,0,0,0.14);
-        }
-        .prod-card:hover .lens { transform: scale(1.1) rotate(5deg); }
-
-        /* Lens renders */
-        .l-mist { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.35) 0%, transparent 35%), radial-gradient(circle at 50% 50%, #1a1a1a 0%, #1a1a1a 19%, #8bb5be 21%, #A9C9D3 32%, #7aadc0 45%, #4a8fa8 52%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.85) 60%, #4a8fa8 62%, #A9C9D3 72%, rgba(169,201,211,0.15) 82%, transparent 100%); }
-        .l-ocean { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.3) 0%, transparent 35%), radial-gradient(circle at 50% 50%, #1a1a1a 0%, #1a1a1a 19%, #3a7ab8 21%, #5B8DB8 32%, #3a6898 45%, #1a4a80 52%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.85) 60%, #1a4a80 62%, #5B8DB8 72%, rgba(91,141,184,0.12) 82%, transparent 100%); }
-        .l-honey { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.3) 0%, transparent 35%), radial-gradient(circle at 50% 50%, #1a1a1a 0%, #1a1a1a 19%, #b87a30 21%, #C4873A 32%, #a06828 45%, #784a18 52%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.85) 60%, #784a18 62%, #C4873A 72%, rgba(196,135,58,0.12) 82%, transparent 100%); }
-        .l-hazel { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.3) 0%, transparent 35%), radial-gradient(circle at 50% 50%, #1a1a1a 0%, #1a1a1a 19%, #5a8a4e 21%, #7A9E6B 32%, #4a7840 45%, #2a5828 52%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.85) 60%, #2a5828 62%, #7A9E6B 72%, rgba(122,158,107,0.12) 82%, transparent 100%); }
-        .l-obsid { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.2) 0%, transparent 35%), radial-gradient(circle at 50% 50%, #050505 0%, #050505 19%, #2a2a32 21%, #3D3D45 32%, #2a2a38 45%, #181820 52%, rgba(0,0,0,0.97) 55%, rgba(0,0,0,0.97) 60%, #181820 62%, #3D3D45 72%, rgba(61,61,69,0.08) 82%, transparent 100%); }
-        .l-champ { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.4) 0%, transparent 35%), radial-gradient(circle at 50% 50%, #1a1a1a 0%, #1a1a1a 19%, #c8a868 21%, #D4B483 32%, #b89050 45%, #987038 52%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.85) 60%, #987038 62%, #D4B483 72%, rgba(212,180,131,0.12) 82%, transparent 100%); }
-
-        .card-body { padding: 18px 20px 20px; }
-        .card-name { font-family: 'Pacifico', cursive; font-size: 1.18rem; color: var(--text); margin-bottom: 4px; }
-        .card-sub { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 13px; }
-        .card-foot { display: flex; align-items: center; justify-content: space-between; }
-        .card-price { font-family: 'Pacifico', cursive; font-size: 1.55rem; color: var(--hot); }
-
-        /* ── DRAWER ── */
-        #drawer {
-            display: none; background: var(--white); border: 2.5px solid var(--border);
-            border-radius: 32px; padding: 52px 44px; margin-top: 26px;
-            box-shadow: 0 12px 56px rgba(255,107,157,0.1);
-        }
-        #drawer.open { display: grid; grid-template-columns: 1fr 1fr; gap: 68px; align-items: center; }
-        .drw-img {
-            height: 330px; background: linear-gradient(135deg, #FFF0F8, #F0E8FF);
-            border-radius: 28px; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; position: relative;
-        }
-        .drw-img::before {
-            content: '✨ 💕 ✨'; position: absolute; top: 18px;
-            font-size: 1.3rem; letter-spacing: 10px; opacity: 0.55; animation: flt 4s ease-in-out infinite;
-        }
-        #drw-lens { width: 230px; height: 230px; border-radius: 50%; z-index: 2; box-shadow: 0 16px 56px rgba(0,0,0,0.15); }
-        .drw-tag { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--hot); margin-bottom: 8px; display: block; }
-        #drw-title { font-family: 'Pacifico', cursive; font-size: 2.6rem; color: var(--text); margin-bottom: 13px; }
-        #drw-desc { font-size: 0.88rem; font-weight: 500; line-height: 1.9; color: var(--text2); margin-bottom: 26px; }
-        .drw-specs { display: flex; gap: 18px; margin-bottom: 26px; padding: 18px 0; border-top: 2px solid var(--border); border-bottom: 2px solid var(--border); }
-        .spec { text-align: center; flex: 1; }
-        .sv { font-family: 'Pacifico', cursive; font-size: 1.45rem; color: var(--hot); display: block; }
-        .sl { font-size: 0.52rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text2); margin-top: 3px; display: block; }
-        .drw-price { font-family: 'Pacifico', cursive; font-size: 2.1rem; color: var(--text); margin-bottom: 4px; }
-        .drw-ship { font-size: 0.7rem; font-weight: 700; color: #3a9a5a; margin-bottom: 20px; }
-        .pp-btn {
-            width: 100%; background: #0070ba; color: #fff; border: none;
-            padding: 15px 28px; border-radius: 50px; font-family: 'Nunito', sans-serif;
-            font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
-            transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 6px 20px rgba(0,112,186,0.3);
-        }
-        .pp-btn:hover { background: #003087; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,112,186,0.4); }
-        .pp-btn img { height: 17px; }
-
-        /* ── STEPS ── */
-        .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 26px; }
-        .step {
-            background: var(--white); border: 2.5px solid var(--border); border-radius: 28px;
-            padding: 42px 26px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden;
-        }
-        .step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(to right, var(--blush), var(--lavender)); border-radius: 28px 28px 0 0; }
-        .step:hover { transform: translateY(-5px); box-shadow: 0 16px 40px var(--spink); }
-        .step-emoji { font-size: 2.8rem; margin-bottom: 14px; display: block; }
-        .step-title { font-family: 'Pacifico', cursive; font-size: 1.15rem; color: var(--text); margin-bottom: 9px; }
-        .step-desc { font-size: 0.8rem; font-weight: 500; line-height: 1.8; color: var(--text2); }
-
-        /* ── SAFETY ── */
-        .safety { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-        .scard {
-            background: var(--white); border: 2.5px solid var(--border); border-radius: 28px;
-            padding: 42px 26px; transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .scard:hover { transform: translateY(-5px); box-shadow: 0 16px 40px var(--spink); }
-        .sicon { font-size: 2.3rem; margin-bottom: 16px; display: block; }
-        .stitle2 { font-family: 'Pacifico', cursive; font-size: 1.05rem; color: var(--text); margin-bottom: 9px; }
-        .sdesc { font-size: 0.8rem; font-weight: 500; line-height: 1.8; color: var(--text2); }
-
-        /* ── REVIEWS ── */
-        .reviews { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-        .rcard {
-            background: var(--white); border: 2.5px solid var(--border); border-radius: 24px;
-            padding: 30px 22px; transition: transform 0.3s, box-shadow 0.3s; position: relative;
-        }
-        .rcard::before { content: '"'; position: absolute; top: 14px; left: 18px; font-family: 'Pacifico', cursive; font-size: 2.8rem; color: var(--border); line-height: 1; }
-        .rcard:hover { transform: translateY(-5px); box-shadow: 0 16px 40px var(--spink); }
-        .rstars { color: #FFB300; font-size: 0.95rem; margin-bottom: 14px; letter-spacing: 3px; }
-        .rtext { font-size: 0.88rem; font-weight: 500; font-style: italic; color: var(--text); line-height: 1.8; margin-bottom: 16px; }
-        .rauthor { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text2); }
-        .rproduct { color: var(--hot); }
-
-        /* ── FAQ ── */
-        .faq-item { border-bottom: 2px solid var(--border); }
-        .faq-item summary { list-style: none; padding: 20px 0; font-size: 0.9rem; font-weight: 700; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
-        .faq-item summary::-webkit-details-marker { display: none; }
-        .faq-item summary::after { content: '💕'; font-size: 1rem; flex-shrink: 0; }
-        details[open] summary::after { content: '✨'; }
-        .faq-ans { font-size: 0.83rem; font-weight: 500; line-height: 1.9; color: var(--text2); padding-bottom: 18px; }
-
-        /* ── FOOTER ── */
-        footer { background: linear-gradient(160deg, #2a0a1a, #1a0a28); padding: 60px 48px 38px; }
-        .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 56px; max-width: 1200px; margin: 0 auto 44px; }
-        .foot-mascot { font-size: 2.8rem; display: block; margin-bottom: 8px; animation: flt 4s ease-in-out infinite; }
-        .foot-logo { font-family: 'Pacifico', cursive; font-size: 1.5rem; color: #fff; margin-bottom: 12px; }
-        .foot-logo span { color: var(--blush); }
-        .foot-sub { font-size: 0.76rem; font-weight: 500; line-height: 1.9; color: #666; }
-        .foot-cat { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: #444; margin-bottom: 16px; }
-        .foot-links { list-style: none; }
-        .foot-links li { margin-bottom: 9px; }
-        .foot-links a { font-size: 0.74rem; font-weight: 700; color: #555; text-decoration: none; transition: color 0.2s; }
-        .foot-links a:hover { color: var(--blush); }
-        .foot-bottom { max-width: 1200px; margin: 0 auto; padding-top: 22px; border-top: 1px solid #3a1a2a; display: flex; justify-content: space-between; align-items: center; }
-        .foot-bottom p { font-size: 0.66rem; color: #444; font-weight: 600; }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 900px) {
-            header { padding: 13px 18px; }
-            nav { display: none; }
-            section { padding: 58px 18px; }
-            .hero-content { padding: 0 18px; }
-            .steps, .reviews, .safety { grid-template-columns: 1fr; }
-            .specs-bar { grid-template-columns: repeat(2,1fr); }
-            #drawer.open { grid-template-columns: 1fr; gap: 26px; }
-            .foot-grid { grid-template-columns: 1fr; gap: 22px; }
-            .foot-bottom { flex-direction: column; gap: 8px; text-align: center; }
-            .prod-grid { grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; }
-            .badges-grid { grid-template-columns: 1fr; }
-            .quiz-wrap { padding: 36px 20px; }
-            #drawer { padding: 28px 20px; }
-            .deco { display: none; }
-        }
+        body { font-family: 'Poppins', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .lens-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
     </style>
 </head>
-<body class="es">
+<body class="bg-gray-50">
 
-<!-- LOADER -->
-<div id="loader">
-    <div class="load-lens"></div>
-    <p class="load-txt">Kuralens ✨</p>
-</div>
-
-<!-- CURSOR -->
-<div class="cur-dot" id="cdot"></div>
-<div class="cur-ring" id="cring"></div>
-
-<!-- HEADER -->
-<header id="hdr">
-    <div class="logo">Kuralens ✨</div>
-    <nav>
-        <a href="#collection"><span class="lang-es">✨ Descubre tu brillo</span><span class="lang-en">✨ Find your glow</span></a>
-        <a href="#safety"><span class="lang-es">💕 Seguridad</span><span class="lang-en">💕 Safety</span></a>
-        <a href="#reviews"><span class="lang-es">🌸 Reseñas</span><span class="lang-en">🌸 Reviews</span></a>
-    </nav>
-    <button class="lang-btn" onclick="toggleLang()" id="lbtn">EN</button>
-</header>
-
-<!-- HERO -->
-<div id="hero">
-    <div class="deco" style="top:14%;left:7%;animation-delay:0s;">🌸</div>
-    <div class="deco" style="top:22%;right:9%;animation-delay:1s;font-size:1.6rem;">✨</div>
-    <div class="deco" style="bottom:22%;left:11%;animation-delay:2s;font-size:1.8rem;">💕</div>
-    <div class="deco" style="bottom:28%;right:7%;animation-delay:0.6s;">🦋</div>
-    <div class="deco" style="top:58%;left:4%;animation-delay:1.5s;font-size:1.4rem;">⭐</div>
-    <div class="deco" style="top:9%;right:18%;animation-delay:2.8s;font-size:1.4rem;">🌷</div>
-    <div class="hero-content">
-        <span class="hero-tag lang-es">✨ Lentes Cosméticos Clinical Grade · 6 Tonos</span>
-        <span class="hero-tag lang-en">✨ Clinical Grade Cosmetic Lenses · 6 Shades</span>
-        <h1 class="hero-title">
-            <span class="lang-es">Tu mirada,<br><span class="acc">más linda</span> 💕</span>
-            <span class="lang-en">Your gaze,<br><span class="acc">so pretty</span> 💕</span>
-        </h1>
-        <p class="hero-sub lang-es">Lentes de contacto cosméticos de alta definición. Pigmentos encapsulados, confort clínico, transformación real. Envío internacional incluido 🌍</p>
-        <p class="hero-sub lang-en">High-definition cosmetic contact lenses. Encapsulated pigments, clinical comfort, real transformation. International shipping included 🌍</p>
-        <div class="btns">
-            <a href="#collection" class="btn-p"><span class="lang-es">Descubre tu brillo ✨</span><span class="lang-en">Find your glow ✨</span></a>
-            <a href="#safety" class="btn-g"><span class="lang-es">Nuestra promesa 💖</span><span class="lang-en">Our promise 💖</span></a>
+    <!-- Hero Section -->
+    <header class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl font-bold mb-4">✨ KuraLens ✨</h1>
+            <p class="text-2xl mb-8">Transform Your Look with Premium Colored Contact Lenses</p>
+            <p class="text-xl mb-8">🔥 Special Launch Price: €49 EUR 🔥</p>
+            <a href="#products" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition">Shop Now 👁️</a>
         </div>
-    </div>
-</div>
+    </header>
 
-<!-- MARQUEE -->
-<div class="strip">
-    <div class="strip-inner">
-        <span>🌸 Envío Gratis</span><span>💕 Garantía 30 Días</span><span>✨ Pago Seguro PayPal</span><span>🔬 Clinical Grade</span><span>🌈 6 Tonos Exclusivos</span><span>🚀 Envío Internacional</span>
-        <span>🌸 Free Shipping</span><span>💕 30-Day Guarantee</span><span>✨ Secure PayPal</span><span>🔬 Clinical Grade</span><span>🌈 6 Exclusive Shades</span><span>🚀 Worldwide Shipping</span>
-        <span>🌸 Envío Gratis</span><span>💕 Garantía 30 Días</span><span>✨ Pago Seguro PayPal</span><span>🔬 Clinical Grade</span><span>🌈 6 Tonos Exclusivos</span><span>🚀 Envío Internacional</span>
-        <span>🌸 Free Shipping</span><span>💕 30-Day Guarantee</span><span>✨ Secure PayPal</span><span>🔬 Clinical Grade</span><span>🌈 6 Exclusive Shades</span><span>🚀 Worldwide Shipping</span>
-    </div>
-</div>
+    <!-- Products Section -->
+    <section id="products" class="py-16 container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-12">Choose Your Color</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Product 1 -->
+            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
+                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
+                    <span class="text-6xl">👁️</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Ocean Blue</h3>
+                <p class="text-gray-600 mb-4">Deep ocean blue for a mesmerizing look</p>
+                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
+                <div id="paypal-button-1"></div>
+            </div>
 
-<!-- TRUST BADGES -->
-<div class="badges-wrap">
-    <div class="badges-grid">
-        <div class="badge-item">
-            <span class="badge-icon">🚚✨</span>
-            <div class="badge-title lang-es">Envío Gratis</div>
-            <div class="badge-title lang-en">Free Shipping</div>
-            <div class="badge-desc lang-es">Internacional incluido en el precio</div>
-            <div class="badge-desc lang-en">International included in price</div>
-        </div>
-        <div class="badge-item">
-            <span class="badge-icon">🛡️💕</span>
-            <div class="badge-title lang-es">Garantía 30 Días</div>
-            <div class="badge-title lang-en">30-Day Guarantee</div>
-            <div class="badge-desc lang-es">Devolución completa si no estás feliz</div>
-            <div class="badge-desc lang-en">Full refund if you're not happy</div>
-        </div>
-        <div class="badge-item">
-            <span class="badge-icon">🔒🌸</span>
-            <div class="badge-title lang-es">Pago 100% Seguro</div>
-            <div class="badge-title lang-en">100% Secure Payment</div>
-            <div class="badge-desc lang-es">Protección total del comprador con PayPal</div>
-            <div class="badge-desc lang-en">Full buyer protection with PayPal</div>
-        </div>
-    </div>
-</div>
+            <!-- Product 2 -->
+            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
+                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
+                    <span class="text-6xl">👁️</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Mystic Green</h3>
+                <p class="text-gray-600 mb-4">Enchanting green for a mysterious vibe</p>
+                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
+                <div id="paypal-button-2"></div>
+            </div>
 
-<!-- SPECS BAR -->
-<div style="padding:60px 48px;max-width:1200px;margin:0 auto;">
-    <div class="specs-bar">
-        <div class="sb-item"><span class="sb-val">12</span><span class="sb-lbl lang-es">🗓️ Meses de duración</span><span class="sb-lbl lang-en">🗓️ Months lifespan</span></div>
-        <div class="sb-item"><span class="sb-val">55%</span><span class="sb-lbl lang-es">💧 Contenido de agua</span><span class="sb-lbl lang-en">💧 Water content</span></div>
-        <div class="sb-item"><span class="sb-val">8.6</span><span class="sb-lbl lang-es">📐 Curva base (mm)</span><span class="sb-lbl lang-en">📐 Base curve (mm)</span></div>
-        <div class="sb-item"><span class="sb-val">6</span><span class="sb-lbl lang-es">🌈 Tonos exclusivos</span><span class="sb-lbl lang-en">🌈 Exclusive shades</span></div>
-    </div>
-</div>
+            <!-- Product 3 -->
+            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
+                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
+                    <span class="text-6xl">👁️</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Ruby Red</h3>
+                <p class="text-gray-600 mb-4">Bold red for a striking appearance</p>
+                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
+                <div id="paypal-button-3"></div>
+            </div>
 
-<!-- QUIZ -->
-<div style="padding:0 48px 80px;max-width:1200px;margin:0 auto;">
-    <div class="quiz-wrap">
-        <span class="stag">💖 Tu match perfecto</span>
-        <p class="quiz-title lang-es">¿Qué color va<br>con tu estilo? ✨</p>
-        <p class="quiz-title lang-en">What color matches<br>your style? ✨</p>
-        <p class="quiz-sub lang-es">Elige tu vibra y te decimos tu Kuralens ideal 🌸</p>
-        <p class="quiz-sub lang-en">Choose your vibe and we'll find your perfect Kuralens 🌸</p>
-        <div class="quiz-opts">
-            <button class="qbtn" onclick="quiz('Mist Grey','Gris Natural · Para looks cotidianos y elegantes ✨','Natural Grey · For everyday elegant looks ✨',this)">🍃 Natural & Fresh</button>
-            <button class="qbtn" onclick="quiz('Ocean Blue','Azul Oceánico · Para looks dramáticos e impactantes 💙','Ocean Blue · For dramatic, bold looks 💙',this)">💙 Bold & Dramatic</button>
-            <button class="qbtn" onclick="quiz('Honey Brown','Miel Cálida · Perfecto para piel morena y cálida 🍯','Warm Honey · Perfect for warm and brown skin 🍯',this)">🍯 Warm & Cozy</button>
-            <button class="qbtn" onclick="quiz('Forest Hazel','Verde Bosque · Para las amantes de lo misterioso 🌿','Forest Hazel · For the mysteriously beautiful 🌿',this)">🌿 Mysterious</button>
-            <button class="qbtn" onclick="quiz('Champagne','Champagne Dorado · Para un look editorial de lujo ✨','Champagne · For a luxurious editorial look ✨',this)">✨ Luxe & Glam</button>
-            <button class="qbtn" onclick="quiz('Obsidian','Obsidiana · Para intensificar tu mirada al máximo 🖤','Obsidian · For maximum eye intensity 🖤',this)">🖤 Dark & Intense</button>
-        </div>
-        <div class="quiz-result" id="qres">
-            <p class="qr-title" id="qr-t"></p>
-            <p class="qr-desc" id="qr-d"></p>
-            <a href="#collection" class="btn-p" style="display:inline-block;margin-top:18px;font-size:0.74rem;padding:12px 26px;">
-                <span class="lang-es">Ver mi color 💕</span><span class="lang-en">See my color 💕</span>
-            </a>
-        </div>
-    </div>
-</div>
+            <!-- Product 4 -->
+            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
+                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
+                    <span class="text-6xl">👁️</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Hazel Brown</h3>
+                <p class="text-gray-600 mb-4">Natural hazel for everyday elegance</p>
+                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
+                <div id="paypal-button-4"></div>
+            </div>
 
-<!-- COLLECTION -->
-<section id="collection" style="padding-top:10px;padding-bottom:0;max-width:100%;">
-    <div style="max-width:1200px;margin:0 auto;padding:0 48px 40px;">
-        <span class="stag lang-es">🌈 Colección Nebulosa</span>
-        <span class="stag lang-en">🌈 Nebula Collection</span>
-        <h2 class="stitle lang-es">Descubre tu<br>brillo ✨</h2>
-        <h2 class="stitle lang-en">Find your<br>glow ✨</h2>
-    </div>
-    <div class="prod-grid" style="max-width:1200px;margin:0 auto;padding:0 48px;">
+            <!-- Product 5 -->
+            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
+                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
+                    <span class="text-6xl">👁️</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Violet Dream</h3>
+                <p class="text-gray-600 mb-4">Dreamy violet for a fantasy look</p>
+                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
+                <div id="paypal-button-5"></div>
+            </div>
 
-        <div class="prod-card" onclick="openDrw('Mist Grey','l-mist',`<span class='lang-es'>Gris neblina clínico. El tono más versátil — transforma ojos oscuros con un efecto natural y sofisticado. Ideal para uso diario ✨</span><span class='lang-en'>Clinical mist grey. The most versatile shade — transforms dark eyes naturally and sophisticatedly. Ideal for daily wear ✨</span>`)">
-            <span class="cbadge">✨ Más vendido</span>
-            <div class="card-img"><div class="lens l-mist"></div></div>
-            <div class="card-body">
-                <div class="card-name">Mist Grey</div>
-                <div class="card-sub lang-es">Gris clínico · Efecto natural</div>
-                <div class="card-sub lang-en">Clinical grey · Natural effect</div>
-                <div class="card-foot"><span class="card-price">€49</span><button class="btn-p" style="font-size:0.62rem;padding:9px 18px;"><span class="lang-es">Elegir 💕</span><span class="lang-en">Select 💕</span></button></div>
+            <!-- Product 6 -->
+            <div class="lens-card bg-white rounded-2xl p-6 transition duration-300">
+                <div class="bg-gray-200 rounded-xl h-64 mb-4 flex items-center justify-center">
+                    <span class="text-6xl">👁️</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Gray Steel</h3>
+                <p class="text-gray-600 mb-4">Cool gray for a modern edge</p>
+                <p class="text-3xl font-bold text-purple-600 mb-4">€49 EUR</p>
+                <div id="paypal-button-6"></div>
             </div>
         </div>
+    </section>
 
-        <div class="prod-card" onclick="openDrw('Ocean Blue','l-ocean',`<span class='lang-es'>Azul oceánico intenso. Un tono dramático y magnético que genera contraste irresistible en todos los tonos de piel 💙</span><span class='lang-en'>Intense oceanic blue. A dramatic, magnetic shade creating irresistible contrast on all skin tones 💙</span>`)">
-            <span class="cbadge lav">💙 Fan favorite</span>
-            <div class="card-img"><div class="lens l-ocean"></div></div>
-            <div class="card-body">
-                <div class="card-name">Ocean Blue</div>
-                <div class="card-sub lang-es">Azul oceánico · Contraste máximo</div>
-                <div class="card-sub lang-en">Oceanic blue · Maximum contrast</div>
-                <div class="card-foot"><span class="card-price">€49</span><button class="btn-p" style="font-size:0.62rem;padding:9px 18px;"><span class="lang-es">Elegir 💕</span><span class="lang-en">Select 💕</span></button></div>
+    <!-- Features -->
+    <section class="bg-white py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12">Why Choose KuraLens?</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <div class="text-5xl mb-4">✅</div>
+                    <h3 class="text-xl font-bold mb-2">FDA Approved</h3>
+                    <p class="text-gray-600">Safe and certified contact lenses</p>
+                </div>
+                <div>
+                    <div class="text-5xl mb-4">📦</div>
+                    <h3 class="text-xl font-bold mb-2">Free Shipping</h3>
+                    <p class="text-gray-600">Worldwide delivery included</p>
+                </div>
+                <div>
+                    <div class="text-5xl mb-4">🔄</div>
+                    <h3 class="text-xl font-bold mb-2">Yearly Lenses</h3>
+                    <p class="text-gray-600">Last up to 1 year with proper care</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="prod-card" onclick="openDrw('Honey Brown','l-honey',`<span class='lang-es'>Miel cálida. El favorito para piel morena — aporta calidez y luminosidad con un acabado editorial que enamora 🍯</span><span class='lang-en'>Warm honey. The favorite for brown skin — adds warmth and luminosity with an editorial finish 🍯</span>`)">
-            <span class="cbadge gold">🍯 Top pick</span>
-            <div class="card-img"><div class="lens l-honey"></div></div>
-            <div class="card-body">
-                <div class="card-name">Honey Brown</div>
-                <div class="card-sub lang-es">Miel cálida · Piel morena</div>
-                <div class="card-sub lang-en">Warm honey · For brown skin</div>
-                <div class="card-foot"><span class="card-price">€49</span><button class="btn-p" style="font-size:0.62rem;padding:9px 18px;"><span class="lang-es">Elegir 💕</span><span class="lang-en">Select 💕</span></button></div>
-            </div>
-        </div>
+    <!-- Contact -->
+    <section class="py-16 container mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-8">Questions?</h2>
+        <p class="text-xl mb-4">📧 Email: contact@kuralens.com</p>
+        <p class="text-xl mb-4">📱 WhatsApp: +XX XXX XXX XXX</p>
+        <p class="text-gray-600 mt-8">⚠️ <strong>Important:</strong> Prescription required. Consult with an eye specialist.</p>
+    </section>
 
-        <div class="prod-card" onclick="openDrw('Forest Hazel','l-hazel',`<span class='lang-es'>Verde bosque profundo. Matices de avellana que evocan naturaleza y misterio. Efecto sorprendente en ojos oscuros 🌿</span><span class='lang-en'>Deep forest green with hazel undertones evoking nature and mystery. Stunning on dark eyes 🌿</span>`)">
-            <span class="cbadge mint">🌿 Edición limitada</span>
-            <div class="card-img"><div class="lens l-hazel"></div></div>
-            <div class="card-body">
-                <div class="card-name">Forest Hazel</div>
-                <div class="card-sub lang-es">Verde bosque · Misterioso</div>
-                <div class="card-sub lang-en">Forest green · Mysterious</div>
-                <div class="card-foot"><span class="card-price">€49</span><button class="btn-p" style="font-size:0.62rem;padding:9px 18px;"><span class="lang-es">Elegir 💕</span><span class="lang-en">Select 💕</span></button></div>
-            </div>
-        </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <p>&copy; 2026 KuraLens. All rights reserved.</p>
+    </footer>
 
-        <div class="prod-card" onclick="openDrw('Obsidian','l-obsid',`<span class='lang-es'>Negro obsidiana profundo. Intensifica y amplía el iris para una mirada magnética e hipnótica 🖤</span><span class='lang-en'>Deep obsidian black. Intensifies and enlarges the iris for a magnetic, hypnotic gaze 🖤</span>`)">
-            <span class="cbadge dark">🖤 Dark glam</span>
-            <div class="card-img"><div class="lens l-obsid"></div></div>
-            <div class="card-body">
-                <div class="card-name">Obsidian</div>
-                <div class="card-sub lang-es">Negro profundo · Hipnótico</div>
-                <div class="card-sub lang-en">Deep black · Hypnotic</div>
-                <div class="card-foot"><span class="card-price">€49</span><button class="btn-p" style="font-size:0.62rem;padding:9px 18px;"><span class="lang-es">Elegir 💕</span><span class="lang-en">Select 💕</span></button></div>
-            </div>
-        </div>
+    <!-- PayPal Buttons Script -->
+    <script>
+        // Replace 'YOUR_PAYPAL_CLIENT_ID' with your actual PayPal Client ID
+        const products = [
+            { id: '1', name: 'Ocean Blue - KuraLens', price: '49.00' },
+            { id: '2', name: 'Mystic Green - KuraLens', price: '49.00' },
+            { id: '3', name: 'Ruby Red - KuraLens', price: '49.00' },
+            { id: '4', name: 'Hazel Brown - KuraLens', price: '49.00' },
+            { id: '5', name: 'Violet Dream - KuraLens', price: '49.00' },
+            { id: '6', name: 'Gray Steel - KuraLens', price: '49.00' }
+        ];
 
-        <div class="prod-card" onclick="openDrw('Champagne','l-champ',`<span class='lang-es'>Champagne dorado. Captura la luz con un brillo dorado sutil que transforma ojos claros y oscuros por igual ✨</span><span class='lang-en'>Golden champagne. Captures light with subtle golden shimmer transforming both light and dark eyes ✨</span>`)">
-            <span class="cbadge gold">✨ Nuevo</span>
-            <div class="card-img"><div class="lens l-champ"></div></div>
-            <div class="card-body">
-                <div class="card-name">Champagne</div>
-                <div class="card-sub lang-es">Dorado luminoso · Exclusivo</div>
-                <div class="card-sub lang-en">Luminous gold · Exclusive</div>
-                <div class="card-foot"><span class="card-price">€49</span><button class="btn-p" style="font-size:0.62rem;padding:9px 18px;"><span class="lang-es">Elegir 💕</span><span class="lang-en">Select 💕</span></button></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DRAWER -->
-    <div id="drawer" style="max-width:1200px;margin:24px auto 0;padding:0 48px 56px;">
-        <div class="drw-img"><div id="drw-lens"></div></div>
-        <div>
-            <span class="drw-tag">✨ Clinical Grade · Edición Exclusiva</span>
-            <h3 id="drw-title">Mist Grey</h3>
-            <p id="drw-desc"></p>
-            <div class="drw-specs">
-                <div class="spec"><span class="sv">12</span><span class="sl lang-es">🗓️ Meses</span><span class="sl lang-en">🗓️ Months</span></div>
-                <div class="spec"><span class="sv">55%</span><span class="sl lang-es">💧 Agua</span><span class="sl lang-en">💧 Water</span></div>
-                <div class="spec"><span class="sv">8.6</span><span class="sl lang-es">📐 Curva base</span><span class="sl lang-en">📐 Base curve</span></div>
-                <div class="spec"><span class="sv">0.00</span><span class="sl lang-es">👁️ Potencia</span><span class="sl lang-en">👁️ Power</span></div>
-            </div>
-            <div class="drw-price">€49.00 <span style="font-size:0.95rem;color:var(--text2);">EUR</span></div>
-            <p class="drw-ship lang-es">✈️ Envío internacional prioritario incluido · ¡Llega en 7-15 días!</p>
-            <p class="drw-ship lang-en">✈️ Priority international shipping included · Arrives in 7-15 days!</p>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="max-width:370px;">
-                <input type="hidden" name="cmd" value="_xclick">
-                <input type="hidden" name="business" value="mavs1594@gmail.com">
-                <input type="hidden" name="item_name" id="pp-item" value="Kuralens — Clinical Cosmetic Contact Lenses">
-                <input type="hidden" name="amount" value="49.00">
-                <input type="hidden" name="currency_code" value="EUR">
-                <input type="hidden" name="no_shipping" value="1">
-                <input type="hidden" name="return" value="https://margi15.github.io/kuralens/">
-                <input type="hidden" name="cancel_return" value="https://margi15.github.io/kuralens/">
-                <button type="submit" class="pp-btn">
-                    <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal">
-                    <span class="lang-es">Pagar con PayPal 💕</span>
-                    <span class="lang-en">Pay with PayPal 💕</span>
-                </button>
-            </form>
-            <p style="font-size:0.63rem;color:var(--text2);margin-top:12px;font-weight:600;" class="lang-es">🔒 Pago seguro · 💕 Garantía 30 días · 👁️ Solo uso cosmético</p>
-            <p style="font-size:0.63rem;color:var(--text2);margin-top:12px;font-weight:600;" class="lang-en">🔒 Secure payment · 💕 30-day guarantee · 👁️ Cosmetic use only</p>
-        </div>
-    </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section style="background:linear-gradient(155deg,#FFF0F8,#F0E8FF);max-width:100%;padding:88px 48px;">
-    <div style="max-width:1200px;margin:0 auto;">
-        <span class="stag lang-es">🌸 Tu transformación en 3 pasos</span>
-        <span class="stag lang-en">🌸 Your transformation in 3 steps</span>
-        <h2 class="stitle lang-es">Simple. Bonito.<br>Mágico ✨</h2>
-        <h2 class="stitle lang-en">Simple. Pretty.<br>Magical ✨</h2>
-        <div class="steps">
-            <div class="step">
-                <span class="step-emoji">👁️✨</span>
-                <div class="step-title lang-es">Elige tu tono</div>
-                <div class="step-title lang-en">Choose your shade</div>
-                <p class="step-desc lang-es">Usa nuestro quiz o explora los 6 tonos. Cada uno diseñado para lucir natural y hermoso en todo tipo de ojos.</p>
-                <p class="step-desc lang-en">Use our quiz or explore all 6 shades. Each designed to look natural and beautiful on every eye type.</p>
-            </div>
-            <div class="step">
-                <span class="step-emoji">💳💕</span>
-                <div class="step-title lang-es">Pago seguro</div>
-                <div class="step-title lang-en">Secure payment</div>
-                <p class="step-desc lang-es">Compra con total seguridad vía PayPal. Protección completa incluida. Garantía de 30 días sin preguntas 🛡️</p>
-                <p class="step-desc lang-en">Buy securely via PayPal. Complete buyer protection included. 30-day no-questions guarantee 🛡️</p>
-            </div>
-            <div class="step">
-                <span class="step-emoji">📦🌸</span>
-                <div class="step-title lang-es">¡Llega a tu puerta!</div>
-                <div class="step-title lang-en">Arrives at your door!</div>
-                <p class="step-desc lang-es">Tu pedido llega en 7-15 días a cualquier país. Envío prioritario incluido. Sin costos ocultos 🚀</p>
-                <p class="step-desc lang-en">Your order arrives in 7-15 days to any country. Priority shipping included. No hidden costs 🚀</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- SAFETY -->
-<section id="safety" style="max-width:100%;padding:88px 48px;">
-    <div style="max-width:1200px;margin:0 auto;">
-        <span class="stag lang-es">💕 Hecho con amor para ti</span>
-        <span class="stag lang-en">💕 Made with love for you</span>
-        <h2 class="stitle lang-es">Tu seguridad,<br>nuestra prioridad 🛡️</h2>
-        <h2 class="stitle lang-en">Your safety,<br>our priority 🛡️</h2>
-        <div class="safety">
-            <div class="scard"><span class="sicon">💧</span><div class="stitle2 lang-es">Contenido de agua 55%</div><div class="stitle2 lang-en">55% Water Content</div><p class="sdesc lang-es">Humectación continua todo el día. Comodidad hasta 8 horas de uso sin molestias.</p><p class="sdesc lang-en">Continuous moisture all day. Comfort for up to 8 hours of wear without discomfort.</p></div>
-            <div class="scard"><span class="sicon">🔬</span><div class="stitle2 lang-es">Pigmentos encapsulados</div><div class="stitle2 lang-en">Encapsulated Pigments</div><p class="sdesc lang-es">El color está entre capas del lente — nunca en contacto con tu ojo. Tecnología clínica de grado hospitalario.</p><p class="sdesc lang-en">Color sandwiched between lens layers — never touching your eye. Hospital-grade clinical technology.</p></div>
-            <div class="scard"><span class="sicon">🛡️</span><div class="stitle2 lang-es">Curva base universal</div><div class="stitle2 lang-en">Universal Base Curve</div><p class="sdesc lang-es">Curva base 8.6mm — ajuste universal para la mayoría de córneas. Sin prescripción para potencia 0.00.</p><p class="sdesc lang-en">8.6mm base curve — universal fit for most corneas. No prescription required for 0.00 power.</p></div>
-        </div>
-    </div>
-</section>
-
-<!-- REVIEWS -->
-<section id="reviews" style="background:linear-gradient(155deg,#FFF0F8,#F0E8FF);max-width:100%;padding:88px 48px;">
-    <div style="max-width:1200px;margin:0 auto;">
-        <span class="stag lang-es">🌸 Lo que dicen nuestras chicas</span>
-        <span class="stag lang-en">🌸 What our girls say</span>
-        <h2 class="stitle lang-es">¡Ellas ya<br>brillan! ✨</h2>
-        <h2 class="stitle lang-en">They're already<br>glowing! ✨</h2>
-        <div class="reviews">
-            <div class="rcard"><div class="rstars">★★★★★</div><p class="rtext lang-es">"Pensé que los lentes de colores se veían artificiales hasta que probé Mist Grey. ¡Nadie adivinó que eran lentes! 😍"</p><p class="rtext lang-en">"I thought colored contacts looked fake until I tried Mist Grey. Nobody guessed they were lenses! 😍"</p><div class="rauthor">Sofia R. — Madrid 🇪🇸 <span class="rproduct">· Mist Grey ✨</span></div></div>
-            <div class="rcard"><div class="rstars">★★★★★</div><p class="rtext lang-es">"El Honey Brown es perfecto para mi piel morena 🍯 El envío llegó en 10 días a México. ¡Los amo!"</p><p class="rtext lang-en">"Honey Brown is perfect for my brown skin 🍯 Arrived in 10 days to Mexico. I love them!"</p><div class="rauthor">Valentina M. — CDMX 🇲🇽 <span class="rproduct">· Honey Brown 🍯</span></div></div>
-            <div class="rcard"><div class="rstars">★★★★★</div><p class="rtext lang-es">"Compré Ocean Blue para una boda y recibí 20 comentarios sobre mis ojos 💙 ¡Son increíbles!"</p><p class="rtext lang-en">"Got Ocean Blue for a wedding and received 20 compliments on my eyes 💙 They're incredible!"</p><div class="rauthor">Isabella K. — Amsterdam 🇳🇱 <span class="rproduct">· Ocean Blue 💙</span></div></div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ -->
-<section style="max-width:100%;padding:88px 48px;">
-    <div style="max-width:800px;margin:0 auto;">
-        <span class="stag">💬 ¿Dudas? ¡Te contestamos!</span>
-        <h2 class="stitle lang-es">Preguntas<br>frecuentes 🌸</h2>
-        <h2 class="stitle lang-en">Got<br>questions? 🌸</h2>
-        <div class="lang-es">
-            <details class="faq-item"><summary>¿Necesito prescripción para comprar?</summary><p class="faq-ans">¡No, linda! 💕 Kuralens ofrece lentes con potencia 0.00 sin prescripción. Para lentes graduados escríbenos por Instagram.</p></details>
-            <details class="faq-item"><summary>¿Cuánto duran los lentes?</summary><p class="faq-ans">¡Son anuales! 🗓️ 12 meses de vida útil con cuidado adecuado. Máximo 8 horas diarias. Siempre en solución salina certificada ✨</p></details>
-            <details class="faq-item"><summary>¿Envían a mi país?</summary><p class="faq-ans">¡A todo el mundo! 🌍 Envío prioritario incluido en el precio de €49 EUR. Tiempo estimado: 7-15 días hábiles 🚀</p></details>
-            <details class="faq-item"><summary>¿Son seguros para uso diario?</summary><p class="faq-ans">¡Sí! 🛡️ Los pigmentos están completamente encapsulados. Recomendamos consultar a tu oftalmólogo antes del primer uso 💕</p></details>
-            <details class="faq-item"><summary>¿Puedo devolver el producto?</summary><p class="faq-ans">¡Claro! 💖 Garantía de 30 días. Si no estás feliz, devolución completa sin preguntas. ¡Tu felicidad es lo primero!</p></details>
-        </div>
-        <div class="lang-en">
-            <details class="faq-item"><summary>Do I need a prescription?</summary><p class="faq-ans">No, sweetie! 💕 Kuralens sells 0.00 power (plano) lenses without a prescription. For prescription lenses, contact us via Instagram.</p></details>
-            <details class="faq-item"><summary>How long do they last?</summary><p class="faq-ans">Annual lenses! 🗓️ 12-month lifespan with proper care. Max 8 hours/day. Always store in certified saline solution ✨</p></details>
-            <details class="faq-item"><summary>Do you ship to my country?</summary><p class="faq-ans">Worldwide! 🌍 Priority shipping included in the €49 EUR price. Estimated: 7-15 business days depending on destination 🚀</p></details>
-            <details class="faq-item"><summary>Are they safe for daily wear?</summary><p class="faq-ans">Yes! 🛡️ Pigments fully encapsulated. We recommend consulting your eye doctor before first use 💕</p></details>
-            <details class="faq-item"><summary>Can I return the product?</summary><p class="faq-ans">Of course! 💖 30-day no-questions-asked guarantee. Full refund if you're not happy. Your happiness comes first!</p></details>
-        </div>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-    <div class="foot-grid">
-        <div>
-            <span class="foot-mascot">👁️✨</span>
-            <div class="foot-logo">Kura<span>l</span>ens</div>
-            <p class="foot-sub lang-es">Lentes cosméticos de grado clínico. Hechos con amor para transformar tu mirada de manera segura y bonita 💕 Envío internacional incluido.</p>
-            <p class="foot-sub lang-en">Clinical-grade cosmetic lenses. Made with love to transform your gaze safely and beautifully 💕 International shipping included.</p>
-        </div>
-        <div>
-            <p class="foot-cat lang-es">🌈 Colección</p>
-            <p class="foot-cat lang-en">🌈 Collection</p>
-            <ul class="foot-links">
-                <li><a href="#collection">✨ Mist Grey</a></li>
-                <li><a href="#collection">💙 Ocean Blue</a></li>
-                <li><a href="#collection">🍯 Honey Brown</a></li>
-                <li><a href="#collection">🌿 Forest Hazel</a></li>
-                <li><a href="#collection">🖤 Obsidian</a></li>
-                <li><a href="#collection">🥂 Champagne</a></li>
-            </ul>
-        </div>
-        <div>
-            <p class="foot-cat">💖 Info</p>
-            <ul class="foot-links">
-                <li><a href="#safety">🛡️ <span class="lang-es">Seguridad</span><span class="lang-en">Safety</span></a></li>
-                <li><a href="#reviews">🌸 <span class="lang-es">Reseñas</span><span class="lang-en">Reviews</span></a></li>
-                <li><a href="#">📸 Instagram</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="foot-bottom">
-        <p>© 2026 Kuralens ✨</p>
-        <p class="lang-es">Solo para uso cosmético 👁️ Consulta a tu oftalmólogo.</p>
-        <p class="lang-en">For cosmetic use only 👁️ Consult your ophthalmologist.</p>
-        <p style="color:#2a1020;">XOXO123</p>
-    </div>
-</footer>
-
-<script>
-    // Loader
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            var l = document.getElementById('loader');
-            l.classList.add('out');
-            setTimeout(function() { l.style.display='none'; }, 500);
-        }, 1100);
-    });
-
-    // Cursor
-    var cd = document.getElementById('cdot'), cr = document.getElementById('cring');
-    document.addEventListener('mousemove', function(e) {
-        cd.style.left = e.clientX+'px'; cd.style.top = e.clientY+'px';
-        cr.style.left = e.clientX+'px'; cr.style.top = e.clientY+'px';
-    });
-    document.addEventListener('mousedown', function() { cd.style.transform='translate(-50%,-50%) scale(0.7)'; cr.style.width='46px'; cr.style.height='46px'; });
-    document.addEventListener('mouseup',   function() { cd.style.transform='translate(-50%,-50%) scale(1)';   cr.style.width='30px'; cr.style.height='30px'; });
-
-    // Header scroll
-    window.addEventListener('scroll', function() {
-        document.getElementById('hdr').classList.toggle('scrolled', window.scrollY > 60);
-    });
-
-    // Language
-    function toggleLang() {
-        var isEs = document.body.classList.contains('es');
-        document.body.classList.toggle('es', !isEs);
-        document.body.classList.toggle('en', isEs);
-        document.getElementById('lbtn').textContent = isEs ? 'ES' : 'EN';
-    }
-
-    // Quiz
-    function quiz(name, descEs, descEn, btn) {
-        document.querySelectorAll('.qbtn').forEach(function(b){ b.classList.remove('on'); });
-        btn.classList.add('on');
-        var isEs = document.body.classList.contains('es');
-        document.getElementById('qr-t').textContent = name + ' ✨';
-        document.getElementById('qr-d').textContent = isEs ? descEs : descEn;
-        document.getElementById('qres').classList.add('show');
-    }
-
-    // Product drawer
-    function openDrw(name, lensClass, descHTML) {
-        document.querySelectorAll('.prod-card').forEach(function(c){ c.classList.remove('active'); });
-        event.currentTarget.classList.add('active');
-        document.getElementById('drw-title').textContent = name;
-        document.getElementById('drw-desc').innerHTML = descHTML;
-        document.getElementById('drw-lens').className = lensClass;
-        document.getElementById('drw-lens').style.cssText = 'width:230px;height:230px;border-radius:50%;z-index:2;box-shadow:0 16px 56px rgba(0,0,0,0.15);';
-        document.getElementById('pp-item').value = 'Kuralens ' + name + ' — Clinical Cosmetic Contact Lenses';
-        var drw = document.getElementById('drawer');
-        drw.classList.add('open');
-        setTimeout(function(){ drw.scrollIntoView({behavior:'smooth',block:'center'}); }, 100);
-    }
-</script>
+        products.forEach((product, index) => {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            description: product.name,
+                            amount: {
+                                value: product.price,
+                                currency_code: 'EUR'
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        alert('Payment completed by ' + details.payer.name.given_name + '! We will contact you soon.');
+                        // Here you can redirect to a thank you page or send data to your backend
+                    });
+                },
+                onError: function(err) {
+                    console.error('PayPal Error:', err);
+                    alert('There was an error processing your payment. Please try again or contact us.');
+                }
+            }).render('#paypal-button-' + (index + 1));
+        });
+    </script>
 
 </body>
 </html>
